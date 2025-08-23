@@ -63,6 +63,7 @@ dependencies {
     implementation(libs.lottie)
     implementation(libs.glide)
     implementation(libs.glide.legacy.support.v4)
+    implementation(libs.sdp.android)
     ksp(libs.glide.compiler)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

@@ -21,6 +21,7 @@ lottie = "6.0.0"
 glide = "4.16.0"
 glideLegacySupportV4 = "1.0.0"
 glideCompiler = "4.16.0"
+sdpAndroid = "1.1.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -64,6 +65,10 @@ lottie =  { group = "com.airbnb.android", name = "lottie", version.ref = "lottie
 glide =  { group = "com.github.bumptech.glide", name = "glide", version.ref = "glide" }
 glide-legacy-support-v4 =  { group = "androidx.legacy", name = "legacy-support-v4", version.ref = "glideLegacySupportV4" }
 glide-compiler =  { group = "com.github.bumptech.glide", name = "ksp", version.ref = "glideCompiler" }
+
+#
+sdp-android = { group = "com.intuit.sdp", name = "sdp-android", version.ref = "sdpAndroid"}
+ssp-android = { group = "com.intuit.ssp", name = "ssp-android", version.ref = "sdpAndroid"}
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
