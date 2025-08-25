@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.android)
     id("com.google.devtools.ksp")
     id("kotlin-kapt")
+    id("kotlin-parcelize")
 }
 
 android {
@@ -62,7 +63,14 @@ dependencies {
     implementation(libs.lottie)
     implementation(libs.glide)
     implementation(libs.glide.legacy.support.v4)
+    implementation(libs.glide.okhttp.integration)
     implementation(libs.sdp.android)
+    implementation(libs.ssp.android)
+    implementation(libs.androidx.splash.screen)
+    implementation(libs.recyclerview)
+    ksp(libs.room.compiler)
+    implementation(libs.room.runtime)
+    implementation(libs.room.ktx)
     ksp(libs.glide.compiler)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

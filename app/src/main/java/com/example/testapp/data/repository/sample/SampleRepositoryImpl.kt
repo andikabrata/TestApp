@@ -17,7 +17,7 @@ class SampleRepositoryImpl(
     private val sampleService: SampleService,
     private val sampleMapper: SampleMapper
 ) : SampleRepository {
-    override suspend fun login(): Flow<Resource<SampleModel>> {
+    override suspend fun sample(): Flow<Resource<SampleModel>> {
         return object : NetworkResource<SampleModel>(
             schedulerProvider = schedulerProvider
         ) {

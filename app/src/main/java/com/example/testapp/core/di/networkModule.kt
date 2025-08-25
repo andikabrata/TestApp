@@ -2,6 +2,7 @@ package com.example.testapp.core.di
 
 import com.example.testapp.core.base.network.ApplicationDispatchersProvider
 import com.example.testapp.core.base.network.SchedulerProvider
+import com.example.testapp.data.service.HomeNewsService
 import com.example.testapp.data.service.SampleService
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
@@ -17,7 +18,9 @@ import java.util.concurrent.TimeUnit
  * @date 23/08/2025
  */
 
+private const val BASE_URL = "https://newsapi.org/"
 private const val TIMEOUT: Long = 60
+
 val networkModule = module {
     single { GsonBuilder().create() }
 
@@ -34,6 +37,14 @@ val networkModule = module {
         }.build()
     }
 
+    single<Retrofit> {
+        Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create(get()))
+            .client(get())
+            .build()
+    }
+
     single<Retrofit>(named("sampleMock")) {
         Retrofit.Builder()
             .baseUrl("https://jsonblob.com/")
@@ -44,4 +55,5 @@ val networkModule = module {
 
     factory<SchedulerProvider> { ApplicationDispatchersProvider() }
     factory { get<Retrofit>(qualifier = named("sampleMock")).create(SampleService::class.java) }
+    factory { get<Retrofit>().create(HomeNewsService::class.java) }
 }

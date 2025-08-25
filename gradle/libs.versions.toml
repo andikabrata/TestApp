@@ -21,7 +21,11 @@ lottie = "6.0.0"
 glide = "4.16.0"
 glideLegacySupportV4 = "1.0.0"
 glideCompiler = "4.16.0"
+glide_okhttp_interceptor = "4.16.0"
 sdpAndroid = "1.1.1"
+androidx_splash_screen = "1.0.1"
+recyclerview = "1.4.0"
+room = "2.7.2"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -65,10 +69,22 @@ lottie =  { group = "com.airbnb.android", name = "lottie", version.ref = "lottie
 glide =  { group = "com.github.bumptech.glide", name = "glide", version.ref = "glide" }
 glide-legacy-support-v4 =  { group = "androidx.legacy", name = "legacy-support-v4", version.ref = "glideLegacySupportV4" }
 glide-compiler =  { group = "com.github.bumptech.glide", name = "ksp", version.ref = "glideCompiler" }
+glide_okhttp_integration = { module = "com.github.bumptech.glide:okhttp3-integration", version.ref = "glide_okhttp_interceptor" }
 
-#
+# sdp android
 sdp-android = { group = "com.intuit.sdp", name = "sdp-android", version.ref = "sdpAndroid"}
 ssp-android = { group = "com.intuit.ssp", name = "ssp-android", version.ref = "sdpAndroid"}
+
+# splash screen
+androidx_splash_screen = { module = "androidx.core:core-splashscreen", version.ref = "androidx_splash_screen"}
+
+# recyclerview
+recyclerview = { module = "androidx.recyclerview:recyclerview", version.ref = "recyclerview"}
+
+# room
+room_compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
+room_ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
+room_runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

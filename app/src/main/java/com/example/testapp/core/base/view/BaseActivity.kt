@@ -3,6 +3,7 @@ package com.example.testapp.core.base.view
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.testapp.BR
+import com.example.testapp.common.extension.updateStatusBar
 
 
 /**
@@ -17,6 +18,7 @@ abstract class BaseActivity<VM : BaseViewModel> : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         setLayoutIfDefined()
+        updateStatusBar()
     }
 
     private fun setLayoutIfDefined() {

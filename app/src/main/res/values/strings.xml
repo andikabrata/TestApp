@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Test App</string>
+    <string name="news_label">News</string>
+    <string name="search_hint_label">Search News...</string>
+    <string name="save_news_label">Save News</string>
+    <string name="news_not_found_label">News not found</string>
+    <string name="news_not_found_label_v2">you have no news saved</string>
 </resources>

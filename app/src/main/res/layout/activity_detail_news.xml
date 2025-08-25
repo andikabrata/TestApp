@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="view"
+            type="com.example.testapp.persentation.feature.detail_news.DetailNewsView" />
+
+        <variable
+            name="vm"
+            type="com.example.testapp.persentation.feature.detail_news.DetailNewsViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <include
+            android:id="@+id/layout_toolbar"
+            layout="@layout/toolbar_view" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/imgThumbnail"
+            android:layout_width="@dimen/_246sdp"
+            android:layout_height="@dimen/_145sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:background="@drawable/contoh_image"
+            android:scaleType="centerCrop"
+            app:image="@{vm.latestNews.urlToImage}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/layout_toolbar"
+            app:shapeAppearanceOverlay="@style/RoundedImage"
+            tools:ignore="ContentDescription" />
+
+
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:text="@{vm.latestNews.title}"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_13sdp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@+id/imgThumbnail"
+            app:layout_constraintStart_toStartOf="@id/imgThumbnail"
+            app:layout_constraintTop_toBottomOf="@+id/imgThumbnail"
+            tools:text="Crystals dancing to the tune of light might
+            replace batteries" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:drawableStart="@drawable/ic_author"
+            android:drawablePadding="@dimen/_5sdp"
+            android:text="@{vm.latestNews.author}"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="@dimen/_10sdp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@id/imgThumbnail"
+            app:layout_constraintTop_toBottomOf="@+id/tvTitle"
+            tools:ignore="UseCompatTextViewDrawableXml"
+            tools:text="Amal Jos Chacko" />
+
+        <TextView
+            android:id="@+id/tvTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:textColor="@android:color/holo_orange_dark"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="@+id/imgThumbnail"
+            app:layout_constraintTop_toBottomOf="@+id/tvTitle"
+            app:publishDate="@{vm.latestNews.publishedAt}"
+            tools:text="7 hours ago" />
+
+        <TextView
+            android:id="@+id/tvDescription"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_40sdp"
+            android:justificationMode="inter_word"
+            android:lineSpacingExtra="2dp"
+            android:text="@{vm.latestNews.description}"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_13sdp"
+            app:layout_constraintEnd_toEndOf="@+id/imgThumbnail"
+            app:layout_constraintStart_toStartOf="@id/imgThumbnail"
+            app:layout_constraintTop_toBottomOf="@+id/tvTitle"
+            tools:text="Crystals dancing to the tune of light might
+            replace batteries"
+            tools:ignore="UnusedAttribute" />
+
+        <com.google.android.material.button.MaterialButton
+            android:layout_width="@dimen/_200sdp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:backgroundTint="@color/orange"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:onClick="@{v->view.onBtnSaveClicked(vm.latestNews)}"
+            android:text="@string/save_news_label"
+            android:visibility="@{vm.isFromNotif?View.GONE : View.VISIBLE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+        </com.google.android.material.button.MaterialButton>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

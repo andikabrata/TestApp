@@ -14,6 +14,6 @@ class SampleUseCase(
     private val repo: SampleRepository
 ) : FlowUseCase<Unit, SampleModel>() {
     override suspend fun execute(parameters: Unit?): Flow<Resource<SampleModel>> {
-        return repo.login()
+        return repo.sample()
     }
 }

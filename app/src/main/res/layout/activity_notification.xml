@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="vm"
+            type="com.example.testapp.persentation.feature.notification.NotificationViewModel" />
+    </data>
+
+    <LinearLayout
+        android:id="@+id/main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/iclToolbar"
+            layout="@layout/toolbar_view" />
+
+        <include
+            android:id="@+id/iclSearchView"
+            layout="@layout/search_bar" />
+
+        <include
+            android:id="@+id/iclEmptyView"
+            layout="@layout/empty_view"
+            android:visibility="@{vm.isNewsEmpty?View.VISIBLE : View.GONE}"
+            tools:visibility="gone" />
+
+        <RelativeLayout
+            android:id="@+id/rlRecyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="@dimen/_10sdp"
+            android:paddingEnd="@dimen/_10sdp"
+            android:visibility="@{vm.isNewsEmpty?View.GONE : View.VISIBLE}">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvNotification"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </RelativeLayout>
+
+    </LinearLayout>
+</layout>

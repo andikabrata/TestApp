@@ -15,4 +15,7 @@ open class BaseApiResponse {
 
     @SerializedName("message")
     var message: String? = null
+
+    @SerializedName("totalResults")
+    var totalResults: String? = null
 }
