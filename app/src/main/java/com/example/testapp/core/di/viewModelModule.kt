@@ -6,7 +6,7 @@ import com.example.testapp.persentation.feature.notification.NotificationViewMod
 import com.example.testapp.persentation.feature.sample.SampleViewModel
 import com.example.testapp.persentation.feature.search.SearchNewsViewModel
 import com.example.testapp.persentation.feature.splash_screen.SplashScreenViewModel
-import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
 /**

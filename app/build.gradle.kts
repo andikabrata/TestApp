@@ -30,8 +30,8 @@ android {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
-    kotlinOptions {
-        jvmTarget = "17"
+    kotlin {
+        jvmToolchain(17)
     }
     buildFeatures {
         dataBinding = true
@@ -62,16 +62,16 @@ dependencies {
     implementation(libs.log)
     implementation(libs.lottie)
     implementation(libs.glide)
+    ksp(libs.glide.compiler)
     implementation(libs.glide.legacy.support.v4)
     implementation(libs.glide.okhttp.integration)
     implementation(libs.sdp.android)
     implementation(libs.ssp.android)
     implementation(libs.androidx.splash.screen)
     implementation(libs.recyclerview)
-    ksp(libs.room.compiler)
     implementation(libs.room.runtime)
     implementation(libs.room.ktx)
-    ksp(libs.glide.compiler)
+    ksp(libs.room.compiler)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
