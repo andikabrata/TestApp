@@ -29,8 +29,8 @@ android {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
-    kotlinOptions {
-        jvmTarget = "17"
+    kotlin {
+        jvmToolchain(17)
     }
     buildFeatures {
         dataBinding = true
@@ -39,7 +39,6 @@ android {
 }
 
 dependencies {
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
@@ -62,9 +61,9 @@ dependencies {
     implementation(libs.log)
     implementation(libs.lottie)
     implementation(libs.glide)
+    ksp(libs.glide.compiler)
     implementation(libs.glide.legacy.support.v4)
     implementation(libs.sdp.android)
-    ksp(libs.glide.compiler)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

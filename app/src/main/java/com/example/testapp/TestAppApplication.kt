@@ -12,7 +12,7 @@ import org.koin.core.logger.Level
  * @author Andika Bratadirja
  * @date 23/08/2025
  */
-class TestAppAplication : Application() {
+class TestAppApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         setupKoin()
@@ -21,7 +21,7 @@ class TestAppAplication : Application() {
     private fun setupKoin() {
         startKoin {
             androidLogger(Level.NONE)
-            androidContext(this@TestAppAplication)
+            androidContext(this@TestAppApplication)
             fragmentFactory()
             modules(appModules)
         }
