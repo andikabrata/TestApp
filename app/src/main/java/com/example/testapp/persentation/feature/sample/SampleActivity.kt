@@ -1,5 +1,7 @@
 package com.example.testapp.persentation.feature.sample
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import com.example.testapp.R
 import com.example.testapp.core.base.network.Resource
@@ -12,6 +14,16 @@ class SampleActivity : BaseActivity<SampleViewModel>(), ViewDataBindingOwner<Act
     override val layoutResourceId: Int = R.layout.activity_sample
     override val viewModel: SampleViewModel by viewModel()
     override var binding: ActivitySampleBinding? = null
+
+    companion object {
+        fun startActivity(
+            context: Context
+        ) {
+            val intent = Intent(context, SampleActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+            context.startActivity(intent)
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

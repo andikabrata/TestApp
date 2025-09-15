@@ -8,4 +8,5 @@ open class BaseResponse {
     var code: Int? = null
     var status: String? = ""
     var message: String? = ""
+    var totalResults: String? = ""
 }

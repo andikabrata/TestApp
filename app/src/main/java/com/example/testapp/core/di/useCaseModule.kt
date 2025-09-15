@@ -1,5 +1,7 @@
 package com.example.testapp.core.di
 
+import com.example.testapp.domain.home_news.GetCategoryListNewsUseCase
+import com.example.testapp.domain.home_news.GetLatestNewsUseCase
 import com.example.testapp.domain.sample.SampleUseCase
 import org.koin.dsl.module
 
@@ -9,4 +11,6 @@ import org.koin.dsl.module
  */
 val useCaseModule = module {
     single { SampleUseCase(get()) }
+    single { GetLatestNewsUseCase(get()) }
+    single { GetCategoryListNewsUseCase(get()) }
 }
