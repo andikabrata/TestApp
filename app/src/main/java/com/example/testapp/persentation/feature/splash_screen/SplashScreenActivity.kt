@@ -18,15 +18,12 @@ import com.example.testapp.R
 import com.example.testapp.core.base.view.BaseComposeActivity
 import com.example.testapp.persentation.feature.home_news.HomeNewsActivity
 import kotlinx.coroutines.delay
-import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /**
  * @author Andika Bratadirja
  * @date 13/09/2025
  */
 class SplashScreenActivity : BaseComposeActivity<SplashScreenViewModel>() {
-    override val viewModel: SplashScreenViewModel by viewModel()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.Theme_TestApp)
         super.onCreate(savedInstanceState)
@@ -34,8 +31,7 @@ class SplashScreenActivity : BaseComposeActivity<SplashScreenViewModel>() {
 
     @Composable
     override fun Content(
-        modifier: Modifier,
-        viewModel: SplashScreenViewModel
+        modifier: Modifier
     ) {
         SplashScreen {
             startActivity(Intent(this, HomeNewsActivity::class.java))

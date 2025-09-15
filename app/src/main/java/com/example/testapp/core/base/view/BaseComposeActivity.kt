@@ -17,9 +17,6 @@ import androidx.lifecycle.ViewModel
  * @date 13/09/2025
  */
 abstract class BaseComposeActivity<VM : ViewModel> : ComponentActivity() {
-    // ViewModel generic, otomatis dibuat oleh Activity
-    abstract val viewModel: VM
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge(
@@ -30,7 +27,7 @@ abstract class BaseComposeActivity<VM : ViewModel> : ComponentActivity() {
         )
         setContent {
             AppTheme {
-                Content(Modifier, viewModel)
+                Content(Modifier)
             }
         }
     }
@@ -51,5 +48,5 @@ abstract class BaseComposeActivity<VM : ViewModel> : ComponentActivity() {
      * Override function ini di subclass untuk menampilkan UI
      */
     @Composable
-    protected abstract fun Content(modifier: Modifier, viewModel: VM)
+    protected abstract fun Content(modifier: Modifier)
 }

@@ -55,26 +55,23 @@ import com.example.testapp.core.base.view.BaseComposeActivity
 import com.example.testapp.core.ui.component.AppSearch
 import com.example.testapp.core.ui.component.AppToolbar
 import com.example.testapp.data.model.home_news.LatestNews
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.androidx.compose.koinViewModel
 
 /**
  * @author Andika Bratadirja
  * @date 13/09/2025
  */
 class HomeNewsActivity : BaseComposeActivity<HomeNewsViewModel>() {
-    override val viewModel: HomeNewsViewModel by viewModel()
-
     @Composable
     override fun Content(
-        modifier: Modifier,
-        viewModel: HomeNewsViewModel
+        modifier: Modifier
     ) {
-        HomeNewsScreen(viewModel)
+        HomeNewsScreen()
     }
 }
 
 @Composable
-fun HomeNewsScreen(viewModel: HomeNewsViewModel) {
+fun HomeNewsScreen(viewModel: HomeNewsViewModel = koinViewModel()) {
     val observeCategoryListNews by viewModel.observeCategoryListNews.collectAsState()
     Scaffold { scaffoldPadding ->
         val context = LocalContext.current
@@ -135,7 +132,7 @@ fun HomeNewsScreen(viewModel: HomeNewsViewModel) {
 }
 
 @Composable
-fun LatestNewsScreen(viewModel: HomeNewsViewModel) {
+fun LatestNewsScreen(viewModel: HomeNewsViewModel = koinViewModel()) {
     val observeLatestNews by viewModel.observeLatestNews.collectAsState()
     when {
         observeLatestNews.isLoading -> {
@@ -251,7 +248,7 @@ fun LatestNewsScreen(viewModel: HomeNewsViewModel) {
 }
 
 @Composable
-fun CategoryNewsScreen(viewModel: HomeNewsViewModel, onCategoryClick: (String) -> Unit = {}) {
+fun CategoryNewsScreen(viewModel: HomeNewsViewModel = koinViewModel(), onCategoryClick: (String) -> Unit = {}) {
     val selectedIndex by viewModel.selectedCategoryIndex
     val categoryNews by viewModel.responeGetCategoryNews.observeAsState(emptyList())
 
@@ -369,5 +366,5 @@ fun CategoryListNewsScreen(data: LatestNews) {
 @Preview(showBackground = true)
 @Composable
 fun HomeNewsScreenPreview() {
-//    HomeNewsScreen()
+    HomeNewsScreen()
 }

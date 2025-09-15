@@ -78,6 +78,7 @@ dependencies {
     implementation(libs.koin.android.compat)
     implementation(libs.koin.androidx.workmanager)
     implementation(libs.koin.core)
+    implementation(libs.koin.compose)
     implementation(libs.log)
     implementation(libs.lottie)
     implementation(libs.glide)
