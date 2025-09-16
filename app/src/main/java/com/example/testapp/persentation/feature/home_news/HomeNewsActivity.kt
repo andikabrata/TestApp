@@ -31,9 +31,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -54,14 +55,16 @@ import com.example.testapp.common.extension.DateExt.formatDate
 import com.example.testapp.core.base.view.BaseComposeActivity
 import com.example.testapp.core.ui.component.AppSearch
 import com.example.testapp.core.ui.component.AppToolbar
+import com.example.testapp.data.model.home_news.ui_state.CategoryModelUiState
 import com.example.testapp.data.model.home_news.LatestNews
+import com.example.testapp.data.model.home_news.ui_state.LatestNewsModelUiState
 import org.koin.androidx.compose.koinViewModel
 
 /**
  * @author Andika Bratadirja
  * @date 13/09/2025
  */
-class HomeNewsActivity : BaseComposeActivity<HomeNewsViewModel>() {
+class HomeNewsActivity : BaseComposeActivity() {
     @Composable
     override fun Content(
         modifier: Modifier
@@ -72,7 +75,25 @@ class HomeNewsActivity : BaseComposeActivity<HomeNewsViewModel>() {
 
 @Composable
 fun HomeNewsScreen(viewModel: HomeNewsViewModel = koinViewModel()) {
-    val observeCategoryListNews by viewModel.observeCategoryListNews.collectAsState()
+    val latestNewsModelUiState by viewModel.observeLatestNews.collectAsState()
+    val categoryModelUiState by viewModel.observeCategoryNews.collectAsState()
+    val categoryListNewsUiState by viewModel.observeCategoryListNews.collectAsState()
+
+    HomeNewsContent(
+        latestNewsModelUiState = latestNewsModelUiState,
+        categoryModelUiState = categoryModelUiState,
+        categoryListNewsUiState = categoryListNewsUiState,
+        onEvent = viewModel::onEvent
+    )
+}
+
+@Composable
+fun HomeNewsContent(
+    latestNewsModelUiState: LatestNewsModelUiState,
+    categoryModelUiState: CategoryModelUiState,
+    categoryListNewsUiState: LatestNewsModelUiState,
+    onEvent: (HomeNewsEvent) -> Unit
+) {
     Scaffold { scaffoldPadding ->
         val context = LocalContext.current
         var query by remember { mutableStateOf("") }
@@ -107,24 +128,24 @@ fun HomeNewsScreen(viewModel: HomeNewsViewModel = koinViewModel()) {
             Spacer(modifier = Modifier.height(16.dp))
             LazyColumn(modifier = Modifier.weight(1f)) {
                 item {
-                    LatestNewsScreen(viewModel)
+                    LatestNewsScreen(latestNewsModelUiState)
                 }
                 item {
                     Spacer(modifier = Modifier.height(22.dp))
                 }
                 item {
-                    CategoryNewsScreen(
-                        viewModel = viewModel,
+                    CategoryNewsContent(
+                        categoryModelUiState = categoryModelUiState,
                         onCategoryClick = {
-                            viewModel.getCategoryListNews(categoryName = it)
+                            onEvent(HomeNewsEvent.OnCategoryClick(categoryName = it))
                         }
                     )
                 }
                 item {
                     Spacer(modifier = Modifier.height(10.dp))
                 }
-                items(observeCategoryListNews.listLatestNews ?: emptyList()) { categoryListNews ->
-                    CategoryListNewsScreen(data = categoryListNews)
+                items(categoryListNewsUiState.listLatestNews ?: emptyList()) { categoryListNews ->
+                    CategoryListNewsContent(data = categoryListNews)
                 }
             }
         }
@@ -132,10 +153,9 @@ fun HomeNewsScreen(viewModel: HomeNewsViewModel = koinViewModel()) {
 }
 
 @Composable
-fun LatestNewsScreen(viewModel: HomeNewsViewModel = koinViewModel()) {
-    val observeLatestNews by viewModel.observeLatestNews.collectAsState()
+fun LatestNewsScreen(state: LatestNewsModelUiState) {
     when {
-        observeLatestNews.isLoading -> {
+        state.isLoading -> {
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -146,7 +166,7 @@ fun LatestNewsScreen(viewModel: HomeNewsViewModel = koinViewModel()) {
             }
         }
 
-        observeLatestNews.errorMessage != null -> {}
+        state.errorMessage != null -> {}
         else -> {
             Column(modifier = Modifier.fillMaxWidth()) {
                 Text(
@@ -163,7 +183,7 @@ fun LatestNewsScreen(viewModel: HomeNewsViewModel = koinViewModel()) {
                     contentPadding = PaddingValues(start = 30.dp, end = 20.dp),
                     horizontalArrangement = Arrangement.spacedBy(20.dp)
                 ) {
-                    items(observeLatestNews.listLatestNews ?: emptyList()) { data ->
+                    items(state.listLatestNews ?: emptyList()) { data ->
                         Card(
                             colors = CardDefaults.cardColors(
                                 containerColor = Color.White,
@@ -248,15 +268,17 @@ fun LatestNewsScreen(viewModel: HomeNewsViewModel = koinViewModel()) {
 }
 
 @Composable
-fun CategoryNewsScreen(viewModel: HomeNewsViewModel = koinViewModel(), onCategoryClick: (String) -> Unit = {}) {
-    val selectedIndex by viewModel.selectedCategoryIndex
-    val categoryNews by viewModel.responeGetCategoryNews.observeAsState(emptyList())
+fun CategoryNewsContent(
+    categoryModelUiState: CategoryModelUiState,
+    onCategoryClick: (String) -> Unit = {}
+) {
+    var selectedIndex by rememberSaveable { mutableIntStateOf(0) }
 
     LazyRow(
         contentPadding = PaddingValues(start = 30.dp, end = 20.dp),
         horizontalArrangement = Arrangement.spacedBy(15.dp)
     ) {
-        itemsIndexed(categoryNews) { index, category ->
+        itemsIndexed(categoryModelUiState.listCategoryNews) { index, category ->
             val isSelected = index == selectedIndex
 
             Box(
@@ -265,7 +287,7 @@ fun CategoryNewsScreen(viewModel: HomeNewsViewModel = koinViewModel(), onCategor
                         indication = null,
                         interactionSource = remember { MutableInteractionSource() }
                     ) {
-                        viewModel.selectedCategoryIndex.intValue = index
+                        selectedIndex = index
                         onCategoryClick(category.title)
                     }
                     .border(
@@ -294,7 +316,7 @@ fun CategoryNewsScreen(viewModel: HomeNewsViewModel = koinViewModel(), onCategor
 }
 
 @Composable
-fun CategoryListNewsScreen(data: LatestNews) {
+fun CategoryListNewsContent(data: LatestNews) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -366,5 +388,10 @@ fun CategoryListNewsScreen(data: LatestNews) {
 @Preview(showBackground = true)
 @Composable
 fun HomeNewsScreenPreview() {
-    HomeNewsScreen()
+    HomeNewsContent(
+        LatestNewsModelUiState(),
+        CategoryModelUiState(),
+        LatestNewsModelUiState(),
+        onEvent = {}
+    )
 }

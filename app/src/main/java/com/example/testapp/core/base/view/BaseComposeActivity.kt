@@ -10,13 +10,12 @@ import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.lifecycle.ViewModel
 
 /**
  * @author Andika Bratadirja
  * @date 13/09/2025
  */
-abstract class BaseComposeActivity<VM : ViewModel> : ComponentActivity() {
+abstract class BaseComposeActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge(

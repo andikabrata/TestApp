@@ -1,4 +1,6 @@
-package com.example.testapp.data.model.home_news
+package com.example.testapp.data.model.home_news.ui_state
+
+import com.example.testapp.data.model.home_news.LatestNews
 
 /**
  * @author Andika Bratadirja

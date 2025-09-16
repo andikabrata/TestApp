@@ -1,10 +1,9 @@
 package com.example.testapp.persentation.feature.home_news
 
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.lifecycle.MutableLiveData
 import com.example.testapp.core.base.view.BaseViewModel
+import com.example.testapp.data.model.home_news.ui_state.CategoryModelUiState
 import com.example.testapp.data.model.home_news.CategoryNewsModel
-import com.example.testapp.data.model.home_news.LatestNewsModelUiState
+import com.example.testapp.data.model.home_news.ui_state.LatestNewsModelUiState
 import com.example.testapp.data.util.onFailure
 import com.example.testapp.data.util.onLoading
 import com.example.testapp.data.util.onSuccess
@@ -25,8 +24,8 @@ class HomeNewsViewModel(
 ) : BaseViewModel() {
     private val _observeLatestNews = MutableStateFlow(LatestNewsModelUiState())
     val observeLatestNews = _observeLatestNews.asStateFlow()
-    var selectedCategoryIndex = mutableIntStateOf(0)
-    var responeGetCategoryNews = MutableLiveData<List<CategoryNewsModel>>()
+    private val _observeCategoryNews = MutableStateFlow(CategoryModelUiState())
+    val observeCategoryNews = _observeCategoryNews.asStateFlow()
     private val _observeCategoryListNews = MutableStateFlow(LatestNewsModelUiState())
     val observeCategoryListNews = _observeCategoryListNews.asStateFlow()
 
@@ -70,7 +69,13 @@ class HomeNewsViewModel(
 
     fun getCategoryNews() {
         launch {
-            responeGetCategoryNews.value = initDataCategoryNews()
+            _observeCategoryNews.update {
+                it.copy(
+                    isLoading = false,
+                    errorMessage = null,
+                    listCategoryNews = initDataCategoryNews()
+                )
+            }
         }
     }
 
@@ -103,6 +108,17 @@ class HomeNewsViewModel(
                         )
                     }
                 }
+            }
+        }
+    }
+
+    fun onEvent(event: HomeNewsEvent) {
+        when (event) {
+            is HomeNewsEvent.OnCategoryClick -> {
+                getCategoryListNews(event.categoryName)
+            }
+            HomeNewsEvent.OnRefresh -> {
+                getLatestNews()
             }
         }
     }

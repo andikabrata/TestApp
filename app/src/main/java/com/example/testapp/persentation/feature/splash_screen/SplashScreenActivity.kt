@@ -23,7 +23,7 @@ import kotlinx.coroutines.delay
  * @author Andika Bratadirja
  * @date 13/09/2025
  */
-class SplashScreenActivity : BaseComposeActivity<SplashScreenViewModel>() {
+class SplashScreenActivity : BaseComposeActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.Theme_TestApp)
         super.onCreate(savedInstanceState)
