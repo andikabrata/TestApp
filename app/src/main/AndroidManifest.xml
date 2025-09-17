@@ -32,6 +32,16 @@
         <activity
             android:name=".persentation.feature.home_news.HomeNewsActivity"
             android:exported="false" />
+        <activity
+            android:name=".persentation.feature.detail_news.DetailNewsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".persentation.feature.notification.NotificationActivity"
+            android:exported="false" />
+        <activity
+            android:name=".persentation.feature.search.SearchNewsActivity"
+            android:exported="false" />
+
     </application>
 
 </manifest>

@@ -9,5 +9,6 @@ val appModules = listOf(
     useCaseModule,
     repositoryModule,
     networkModule,
-    mapperModule
+    mapperModule,
+    roomModule
 )

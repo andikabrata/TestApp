@@ -1,11 +1,13 @@
 package com.example.testapp.core.ui.component
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -22,17 +24,42 @@ import com.example.testapp.R
  * @author Andika Bratadirja
  * @date 14/09/2025
  */
+enum class Page {
+    HOME,
+    DETAIL,
+    NOTIFICATION
+}
+
 @Composable
-fun AppToolbar(modifier: Modifier) {
-    Row(
-        modifier = modifier,
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween
+fun AppToolbar(
+    modifier: Modifier,
+    page: Page,
+    onActionClick: (ToolbarAction) -> Unit = {}
+) {
+    Box(
+        modifier = modifier
+            .fillMaxWidth(),
+        contentAlignment = Alignment.Center
     ) {
         Image(
-            painter = painterResource(id = R.drawable.ic_filter),
-            contentDescription = null
+            painter = painterResource(
+                id = if (page == Page.HOME) R.drawable.ic_filter else R.drawable.ic_arrow_left
+            ),
+            contentDescription = null,
+            modifier = Modifier
+                .align(Alignment.CenterStart)
+                .clickable(
+                    indication = null,
+                    interactionSource = remember { MutableInteractionSource() }
+                ) {
+                    if (page != Page.HOME) {
+                        onActionClick(ToolbarAction.BackArrow)
+                    } else {
+                        onActionClick(ToolbarAction.Filter)
+                    }
+                }
         )
+
         Text(
             text = "NEWS",
             style = TextStyle(
@@ -45,16 +72,28 @@ fun AppToolbar(modifier: Modifier) {
                     blurRadius = 4f
                 )
             ),
+            modifier = Modifier.align(Alignment.Center)
         )
-        Image(
-            painter = painterResource(id = R.drawable.ic_notification),
-            contentDescription = null
-        )
+
+        if (page != Page.NOTIFICATION) {
+            Image(
+                painter = painterResource(id = R.drawable.ic_notification),
+                contentDescription = null,
+                modifier = Modifier
+                    .align(Alignment.CenterEnd)
+                    .clickable(
+                        indication = null,
+                        interactionSource = remember { MutableInteractionSource() }
+                    ) {
+                        onActionClick(ToolbarAction.Notification)
+                    }
+            )
+        }
     }
 }
 
 @Preview(showBackground = true)
 @Composable
 fun AppToolbarPreview() {
-    AppToolbar(Modifier.fillMaxWidth())
+    AppToolbar(Modifier.fillMaxWidth(), page = Page.HOME)
 }

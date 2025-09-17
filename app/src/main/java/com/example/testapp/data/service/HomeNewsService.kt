@@ -20,4 +20,10 @@ interface HomeNewsService {
         @Query("category") category: String,
         @Query("apiKey") apiKey: String = ""
     ): LatestNewsModelResponse
+
+    @GET("/v2/top-headlines")
+    suspend fun searchNews(
+        @Query("q") keyword: String,
+        @Query("apiKey") apiKey: String = ""
+    ): LatestNewsModelResponse
 }

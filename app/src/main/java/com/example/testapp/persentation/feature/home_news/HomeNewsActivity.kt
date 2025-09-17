@@ -1,6 +1,5 @@
 package com.example.testapp.persentation.feature.home_news
 
-import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -32,7 +31,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -53,11 +51,16 @@ import coil.compose.AsyncImage
 import com.example.testapp.R
 import com.example.testapp.common.extension.DateExt.formatDate
 import com.example.testapp.core.base.view.BaseComposeActivity
-import com.example.testapp.core.ui.component.AppSearch
+import com.example.testapp.core.ui.component.AppSearchHome
 import com.example.testapp.core.ui.component.AppToolbar
-import com.example.testapp.data.model.home_news.ui_state.CategoryModelUiState
+import com.example.testapp.core.ui.component.Page
+import com.example.testapp.core.ui.component.ToolbarAction
 import com.example.testapp.data.model.home_news.LatestNews
+import com.example.testapp.data.model.home_news.ui_state.CategoryModelUiState
 import com.example.testapp.data.model.home_news.ui_state.LatestNewsModelUiState
+import com.example.testapp.persentation.feature.detail_news.DetailNewsActivity.Companion.startActivity
+import com.example.testapp.persentation.feature.notification.NotificationActivity.Companion.startNotificationActivity
+import com.example.testapp.persentation.feature.search.SearchNewsActivity.Companion.startSearchActivity
 import org.koin.androidx.compose.koinViewModel
 
 /**
@@ -96,7 +99,6 @@ fun HomeNewsContent(
 ) {
     Scaffold { scaffoldPadding ->
         val context = LocalContext.current
-        var query by remember { mutableStateOf("") }
 
         Column(
             modifier = Modifier
@@ -107,10 +109,20 @@ fun HomeNewsContent(
             AppToolbar(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(start = 30.dp, end = 30.dp)
+                    .padding(start = 30.dp, end = 30.dp),
+                page = Page.HOME,
+                onActionClick = { action ->
+                    when (action) {
+                        ToolbarAction.BackArrow -> {}
+                        ToolbarAction.Filter -> {}
+                        ToolbarAction.Notification -> {
+                            startNotificationActivity(context)
+                        }
+                    }
+                }
             )
             Spacer(modifier = Modifier.height(24.dp))
-            AppSearch(
+            AppSearchHome(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(start = 30.dp, end = 30.dp)
@@ -118,17 +130,20 @@ fun HomeNewsContent(
                     .clip(RoundedCornerShape(28.dp))
                     .background(Color.White)
                     .border(1.dp, Color(0xFFE0E0E0), RoundedCornerShape(28.dp))
-                    .padding(horizontal = 8.dp),
-                query = query,
-                onQueryChange = { query = it },
-                onSearchClick = {
-                    Toast.makeText(context, query, Toast.LENGTH_SHORT).show()
-                }
+                    .padding(horizontal = 8.dp)
+                    .clickable(
+                        indication = null,
+                        interactionSource = remember { MutableInteractionSource() }
+                    ) {
+                        startSearchActivity(context = context)
+                    }
             )
             Spacer(modifier = Modifier.height(16.dp))
             LazyColumn(modifier = Modifier.weight(1f)) {
                 item {
-                    LatestNewsScreen(latestNewsModelUiState)
+                    LatestNewsScreen(latestNewsModelUiState, onNewsItemClicked = {
+                        startActivity(context = context, latestNews = it)
+                    })
                 }
                 item {
                     Spacer(modifier = Modifier.height(22.dp))
@@ -145,7 +160,12 @@ fun HomeNewsContent(
                     Spacer(modifier = Modifier.height(10.dp))
                 }
                 items(categoryListNewsUiState.listLatestNews ?: emptyList()) { categoryListNews ->
-                    CategoryListNewsContent(data = categoryListNews)
+                    CategoryListNewsContent(
+                        data = categoryListNews,
+                        onNewsItemClicked = {
+                            startActivity(context = context, latestNews = it)
+                        }
+                    )
                 }
             }
         }
@@ -153,7 +173,10 @@ fun HomeNewsContent(
 }
 
 @Composable
-fun LatestNewsScreen(state: LatestNewsModelUiState) {
+fun LatestNewsScreen(
+    state: LatestNewsModelUiState,
+    onNewsItemClicked: (LatestNews) -> Unit = {}
+) {
     when {
         state.isLoading -> {
             Box(
@@ -191,7 +214,13 @@ fun LatestNewsScreen(state: LatestNewsModelUiState) {
                             ),
                             modifier = Modifier
                                 .width(245.dp)
-                                .height(166.dp),
+                                .height(166.dp)
+                                .clickable(
+                                    indication = null,
+                                    interactionSource = remember { MutableInteractionSource() }
+                                ) {
+                                    onNewsItemClicked(data)
+                                },
                             shape = RoundedCornerShape(12.dp),
                             elevation = CardDefaults.cardElevation(4.dp)
                         ) {
@@ -316,12 +345,21 @@ fun CategoryNewsContent(
 }
 
 @Composable
-fun CategoryListNewsContent(data: LatestNews) {
+fun CategoryListNewsContent(
+    data: LatestNews,
+    onNewsItemClicked: (LatestNews) -> Unit = {}
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .height(105.dp)
             .padding(start = 30.dp, end = 30.dp, top = 10.dp, bottom = 10.dp)
+            .clickable(
+                indication = null,
+                interactionSource = remember { MutableInteractionSource() }
+            ) {
+                onNewsItemClicked(data)
+            }
     ) {
         AsyncImage(
             model = data.urlToImage,

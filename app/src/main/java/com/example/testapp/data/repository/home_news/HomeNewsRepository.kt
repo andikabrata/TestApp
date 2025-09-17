@@ -15,6 +15,6 @@ interface HomeNewsRepository {
     @Throws(Exception::class)
     suspend fun getCategoryListNews(category: String): Flow<Resource<LatestNewsModel>>
 
-   /* @Throws(Exception::class)
-    suspend fun getSearchNews(keyword: String): Flow<Resource<LatestNewsModel>>*/
+    @Throws(Exception::class)
+    suspend fun getSearchNews(keyword: String): Flow<Resource<LatestNewsModel>>
 }

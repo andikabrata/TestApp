@@ -47,4 +47,18 @@ class HomeNewsRepositoryImpl(
         }.asFlow()
     }
 
+    override suspend fun getSearchNews(keyword: String): Flow<Resource<LatestNewsModel>> {
+        return object : NetworkResource<LatestNewsModel>(
+            schedulerProvider = schedulerProvider
+        ) {
+            override suspend fun remoteFetch(): LatestNewsModel {
+                val request = homeNewsService.searchNews(
+                    keyword = keyword,
+                    apiKey = "002f1a266eed4699ae235abf4b0b8b31"
+                )
+                return mapper.map(request)
+            }
+
+        }.asFlow()
+    }
 }
