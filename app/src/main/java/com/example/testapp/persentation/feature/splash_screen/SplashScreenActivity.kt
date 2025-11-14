@@ -17,6 +17,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.example.testapp.R
 import com.example.testapp.core.base.view.BaseComposeActivity
 import com.example.testapp.persentation.feature.home_news.HomeNewsActivity
+import com.example.testapp.persentation.feature.home_rcti.HomeRctiActivity
 import kotlinx.coroutines.delay
 
 /**
@@ -34,7 +35,8 @@ class SplashScreenActivity : BaseComposeActivity() {
         modifier: Modifier
     ) {
         SplashScreen {
-            startActivity(Intent(this, HomeNewsActivity::class.java))
+//            startActivity(Intent(this, HomeNewsActivity::class.java))
+            startActivity(Intent(this, HomeRctiActivity::class.java))
             finish()
         }
     }

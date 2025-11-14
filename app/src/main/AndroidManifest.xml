@@ -41,6 +41,10 @@
         <activity
             android:name=".persentation.feature.search.SearchNewsActivity"
             android:exported="false" />
+        <activity
+            android:name=".persentation.feature.home_rcti.HomeRctiActivity"
+            android:exported="false" />
+
 
     </application>
 
